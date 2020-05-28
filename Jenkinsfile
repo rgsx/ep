@@ -4,7 +4,7 @@ pipeline {
   stages {
         stage ('git checkout'){
             steps{
-                git branch: 'task5', changelog: false, credentialsId: 'github', poll: false, url: 'https://github.com/rgsx/t5_test'
+                git branch: 'task5', changelog: false, credentialsId: 'github', poll: false, url: 'https://github.com/rgsx/ep'
             }
         }
         stage ('build'){
@@ -70,8 +70,8 @@ pipeline {
 			    '''
 			   sh 'echo "stage push"'	
 				withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'username', passwordVariable: 'password')]){
-                                    sh("git push https://$username:$password@github.com/rgsx/t5_test --tags")
-									sh("git push https://$username:$password@github.com/rgsx/t5_test --all")
+                                    sh("git push https://$username:$password@github.com/rgsx/ep --tags")
+									sh("git push https://$username:$password@github.com/rgsx/ep --all")
                 }
                 sh 'ls -A1 | xargs rm -rf'
             }
