@@ -21,11 +21,9 @@ pipeline {
 	tomcat_user = "root"
 	seconds_to_wait= "3"
    
-    nexus_path = "192.168.56.110:8081"
+        nexus_path = "192.168.56.110:8081"
 	nexus_repo_name = "snapshots"
 	file_path = "build/libs/test.war"
-	github_repo = "github.com/rgsx/ep"
-	github_branch = "task5"
 	project_name = "test"
 	version = ""
   }
