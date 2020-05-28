@@ -1,0 +1,1 @@
+iptables -t nat -A POSTROUTING -o enp0s3 ! -s 192.168.56.30/255.255.255.255 -j MASQUERADE
