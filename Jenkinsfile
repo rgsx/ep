@@ -27,6 +27,7 @@ pipeline {
   stages {
         stage ('git checkout'){
             steps{
+                sh 'ls -A1 | xargs rm -rf'
                 git branch: "${github_branch}",
                             changelog: false,
                             credentialsId: 'github',
