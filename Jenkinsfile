@@ -15,7 +15,7 @@ pipeline {
         tomcat_server_name_2 = "tomcat2"
         tomcat_server_port= "8080"
         tomcat_user = "root"
-        seconds_to_wait= "3"
+        seconds_to_wait= "10"
 
         nexus_path = "192.168.56.110:8081"
         nexus_repo_name = "snapshots"
