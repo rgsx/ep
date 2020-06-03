@@ -14,14 +14,14 @@ services:
     build: ./nginx
     image: nginx:latest
     ports:
-      - "80:80"
+      - 80:80
     volumes:
-      - ./nginx/default:/etc/nginx/sites-available/default
+      - ./nginx/default.conf:/etc/nginx/sites-available/default
   
   influxdb:
     image: influxdb:latest
     ports:
-      - "25826:25826/udp"
+      - 25826:25826/udp
     volumes:
       - /var/lib/influxdb
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
@@ -30,7 +30,5 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
     volumes:
       - /var/lib/grafana

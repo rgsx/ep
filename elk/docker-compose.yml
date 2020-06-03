@@ -1,0 +1,42 @@
+version: "3"  
+services: 
+
+  elasticsearch:
+    image: amazon/opendistro-for-elasticsearch:latest
+    environment:
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS}
+      discovery.type: ${discovery_type}
+      opendistro_security.disabled: "true"
+
+  kibana:
+    build: ./kibana
+    environment:
+      NODE_OPTIONS: ${NODE_OPTIONS}
+      ELASTICSEARCH_URL: http://${ELASTIC_HOST}:${ELASTIC_PORT}
+      ELASTICSEARCH_HOSTS: http://${ELASTIC_HOST}:${ELASTIC_PORT}
+    depends_on:
+      - elasticsearch
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/elk.conf:/etc/nginx/sites-available/default
+      - ./logs/nginx:/var/log/nginx
+    ports:
+      - 80:80
+    depends_on:
+      - kibana
+     
+  logstash:
+    build: ./logstash
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.7.0 
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./logs:/logs
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    depends_on:
+      - logstash
