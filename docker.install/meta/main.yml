@@ -1,0 +1,20 @@
+galaxy_info:
+  author: (Siarhei Hankovich) sgankovich@gmail.com
+  description: Maintainer
+  company: devops-future company
+
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms:
+   - name: CentOS
+     versions:
+     - 8
+   - name: Ubuntu
+     versions:
+     - 18.04
+
+  galaxy_tags: []
+
+dependencies: []

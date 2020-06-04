@@ -1,0 +1,21 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: ubuntu
+    image: ubuntu-python:latest
+    pre_build_image: true
+  - name: centos
+    image: centos-python:latest
+    pre_build_image: true
+provisioner:
+  name: ansible
+  log: true
+verifier:
+  name: testinfra
+  additional_files_or_dirs:
+    - ./tests/test_default.py
+lint: |
+  yamllint .

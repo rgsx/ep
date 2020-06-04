@@ -1,0 +1,55 @@
+---
+  - name: Ensure old versions of Docker are not installed.
+    package:
+      name:
+        - docker
+        - docker-engine
+        - docker.io
+        - containerd
+        - runc
+      state: absent
+
+  - name: Install packages
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+
+  - name: Add docker apt-key
+    apt_key:
+      url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+      state: present
+
+  - name: Add Docker repo
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+      state: present
+
+  - name: Install  Docker
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    notify:      
+      docker_start
+      
+  - name: Create a directory /etc/docker
+    file:
+      path: /etc/docker/
+      state: directory
+      mode: '0755'
+  
+  - name: Add insecure registry
+    template:
+      src: daemon.json.j2
+      dest: /etc/docker/daemon.json

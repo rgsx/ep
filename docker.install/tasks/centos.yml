@@ -1,0 +1,28 @@
+---
+  - name: Install yum utils
+    yum:
+      name: yum-utils
+      state: latest
+
+  - name: Add Docker repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+
+  - name: Install Docker
+    yum:
+      name: 
+        - https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.13-3.2.el7.x86_64.rpm
+        - docker-ce      
+      state: present
+
+  - name: Create a directory /etc/docker
+    file:
+      path: /etc/docker
+      state: directory
+      mode: '0755'
+      
+  - name: Add insecure registry
+    template:
+      src: daemon.json.j2
+      dest: /etc/docker/daemon.json
