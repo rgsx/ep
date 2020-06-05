@@ -40,8 +40,6 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
-    notify:      
-      docker_start
       
   - name: Create a directory /etc/docker
     file:
