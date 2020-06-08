@@ -1,0 +1,16 @@
+---
+# vars file for docker.install
+ansible_python_interpreter: /usr/bin/python3
+version: 1.0.22
+task: task6
+
+docker_registry: 95.217.182.68:15000
+url_tm1: http://localhost:9080/test/
+url_tm2: http://localhost:9081/test/
+ajp_port_guest: 8009
+http_port_guest: 8080
+ajp_port_tm1_host: 8080
+ajp_port_tm2_host: 8081
+http_port_tm1_host: 9080
+http_port_tm2_host: 9081
+

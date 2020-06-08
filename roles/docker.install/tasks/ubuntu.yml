@@ -1,0 +1,140 @@
+---
+  - name: Ensure old versions of Docker are not installed.
+    package:
+      name:
+        - docker
+        - docker-engine
+        - docker.io
+        - containerd
+        - runc
+      state: absent
+
+  - name: Install packages
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+
+  - name: Add docker apt-key
+    apt_key:
+      url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+      state: present
+
+  - name: Add Docker repo
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+      state: present
+
+  - name: Install  Docker
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - apache2
+      - libapache2-mod-jk
+      - python3-pip
+    notify:
+      - apache2-start
+      - docker-start
+      
+  - name: Create a directory /etc/docker
+    file:
+      path: /etc/docker/
+      state: directory
+      mode: '0755'
+  
+  - name: Add insecure registry
+    template:
+      src: daemon.json.j2
+      dest: /etc/docker/daemon.json
+
+  - name: Copy workers.properties
+    copy:
+      src: workers.properties
+      dest: /etc/libapache2-mod-jk/workers.properties
+    notify:
+
+  - name: Copy apache.conf
+    copy:
+      src: 000-default.conf
+      dest: /etc/apache2/sites-available/000-default.conf
+    notify:
+      apache2-restart
+        
+  - name: pip install docker
+    pip:
+      name: docker
+
+  - name: test tm1
+    uri:
+      url: "{{ url_tm1 }}" 
+      status_code: 200, -1
+    register: result_tm1
+
+  - name: test tm2
+    uri:
+      url: "{{ url_tm2 }}"
+      status_code: 200, -1
+    register: result_tm2
+
+  - name: Start a container tm1
+    docker_container:
+      name: tomcat1
+      image: "{{ docker_registry }}/{{ task }}:{{ version }}"
+      ports:
+        - "127.0.0.1:{{ ajp_port_tm1_host }}:{{ ajp_port_guest }}"
+        - "127.0.0.1:{{ http_port_tm1_host }}:{{ http_port_guest }}"
+    when: result_tm1.status == -1 
+
+  - name: wait tm1
+    uri:
+      url: "{{ url_tm1 }}"
+      status_code: 200
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+    when: result_tm1.status == -1
+  
+  - name: Stop a container tm2
+    docker_container:
+      name: tomcat2
+      state: absent
+    when: result_tm1.status == -1 and result.status == 200 and result_tm2.status == 200 
+  
+  - name: Start a container tm2
+    docker_container:
+      name: tomcat2
+      image: "{{ docker_registry }}/{{ task }}:{{ version }}"
+      ports:
+        - "127.0.0.1:{{ ajp_port_tm2_host }}:{{ ajp_port_guest }}"
+        - "127.0.0.1:{{ http_port_tm2_host }}:{{ http_port_guest }}"
+    when: result_tm2.status == -1 and result_tm1.status == 200
+
+  - name: wait tm2
+    uri:
+      url: "{{ url_tm2 }}"
+      status_code: 200
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+    when: result_tm2.status == -1 and result_tm1.status == 200
+    
+  - name: Stop a container tm1
+    docker_container:
+      name: tomcat1
+      state: absent
+    when: result_tm1.status == 200 and result.status == 200 and result_tm2.status == -1 
+
+

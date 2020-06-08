@@ -1,3 +1,0 @@
-FROM centos:centos8
-
-RUN yum -y update && yum -y install python3 && yum -y clean packages
