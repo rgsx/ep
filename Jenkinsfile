@@ -12,13 +12,13 @@ pipeline {
 
         docker_replicas = "1"
 		docker_port_target = "8080"
-		docker_port_published = "10000"
+ 		docker_port_published = "10000"
 	    docker_ip = "192.168.56.110"			
         
 		
     
-        nexus_path = "192.168.56.110:8081"
-		docker_registry = "192.168.56.110:15000"
+        nexus_path = "95.217.238.44:8083"
+		docker_registry = "95.217.238.44:15000"
         nexus_repo_name = "snapshots"
         file_path = "build/libs/test.war"
         project_name = "test"
