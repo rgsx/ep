@@ -90,7 +90,7 @@
   - name: Start a container tm1
     docker_container:
       name: tomcat1
-      image: "{{ docker_registry }}/{{ task }}:{{ version }}"
+      image: "{{ docker_registry }}/{{ version }}"
       ports:
         - "127.0.0.1:{{ ajp_port_tm1_host }}:{{ ajp_port_guest }}"
         - "127.0.0.1:{{ http_port_tm1_host }}:{{ http_port_guest }}"
@@ -115,7 +115,7 @@
   - name: Start a container tm2
     docker_container:
       name: tomcat2
-      image: "{{ docker_registry }}/{{ task }}:{{ version }}"
+      image: "{{ docker_registry }}/{{ version }}"
       ports:
         - "127.0.0.1:{{ ajp_port_tm2_host }}:{{ ajp_port_guest }}"
         - "127.0.0.1:{{ http_port_tm2_host }}:{{ http_port_guest }}"
