@@ -1,6 +1,6 @@
 [srv:vars]
 ansible_ssh_user=root
-ansible_ssh_private_key_file=./id_rsa
+ansible_ssh_private_key_file=~/.ssh/id_rsa.9
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [srv]
 95.217.238.44
