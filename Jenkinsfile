@@ -17,8 +17,8 @@ pipeline {
         
 		
     
-        nexus_path = "95.217.238.44:8083"
-		docker_registry = "95.217.238.44:15000"
+        nexus_path = "95.217.182.68:8083"
+		docker_registry = "95.217.182.68:15000"
         nexus_repo_name = "snapshots"
         file_path = "build/libs/test.war"
         project_name = "test"
