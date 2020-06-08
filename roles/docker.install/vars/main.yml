@@ -1,7 +1,7 @@
 ---
 # vars file for docker.install
 ansible_python_interpreter: /usr/bin/python3
-version: 1.0.22
+version: "{{ task }}:1.0.22"
 task: task6
 
 docker_registry: 95.217.182.68:15000
