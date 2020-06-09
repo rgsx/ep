@@ -34,16 +34,18 @@ pipeline {
          }
       }
       
-      stage('Deploy the version: "${version}"'){
+      stage('Deploying the selected version'){
 	steps{
 	    script{
+                currentBuild.displayName = "Deploying the ${version} version"
 	        sh "ansible-playbook -i hosts -e version=${image}:${version} main.yml"
 	    }
 	}
       }
  
-      stage ('Testing a Deploy the version: "${version}"'){
+      stage ('Testing a Deploy the selected version:'){
 	steps{
+                currentBuild.displayName = "Testing a Deploy the ${version} version."
 		sh "curl http://${deploy_ip}:${deploy_port}/${deploy_project}/ | grep ${version}"
 	}
       }
