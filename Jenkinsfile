@@ -33,7 +33,7 @@ pipeline {
       stage('Deploy the selected Version'){
 	steps{
 	    script{
-	        sh "echo ansible-playbook -i hosts -e version=${image}:${version} main.yml"
+	        sh "ansible-playbook -i hosts -e version=${image}:${version} main.yml"
 	    }
 	}
       }
