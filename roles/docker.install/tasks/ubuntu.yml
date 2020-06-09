@@ -71,6 +71,9 @@
       dest: /etc/apache2/sites-available/000-default.conf
     notify:
       apache2-restart
+      
+  - name: flush handlers
+    meta: flush_handlers
         
   - name: pip install docker
     pip:
