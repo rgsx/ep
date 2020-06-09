@@ -12,6 +12,10 @@ pipeline {
        image = "task6"
        url = "http://95.217.182.68:15000/v2/${image}/tags/list"
        version = ""
+       deploy_ip = "95.217.238.44"
+       deploy_port = "80"
+       deploy_project = "test"
+       
    }
 
    stages {
@@ -37,6 +41,14 @@ pipeline {
 	    }
 	}
       }
+ 
+      stage ('Testing Deploy'){
+	steps{
+		sh "curl http://${deploy_ip}:${deploy_port}/${deploy_project}/ | grep ${version}"
+	}
+      }
+
+
    }
 }
 
