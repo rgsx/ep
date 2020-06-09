@@ -34,7 +34,7 @@ pipeline {
          }
       }
       
-      stage('Deploy the selected Version'){
+      stage('Deploy the version: "${version}"'){
 	steps{
 	    script{
 	        sh "ansible-playbook -i hosts -e version=${image}:${version} main.yml"
@@ -42,7 +42,7 @@ pipeline {
 	}
       }
  
-      stage ('Testing Deploy'){
+      stage ('Testing a Deploy the version: "${version}"'){
 	steps{
 		sh "curl http://${deploy_ip}:${deploy_port}/${deploy_project}/ | grep ${version}"
 	}
