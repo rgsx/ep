@@ -45,8 +45,10 @@ pipeline {
  
       stage ('Testing a Deploy the selected version:'){
 	steps{
-                currentBuild.displayName = "Testing a Deploy the ${version} version."
-		sh "curl http://${deploy_ip}:${deploy_port}/${deploy_project}/ | grep ${version}"
+               script{ 
+                 currentBuild.displayName = "Testing a Deploy the ${version} version."
+	         sh "curl http://${deploy_ip}:${deploy_port}/${deploy_project}/ | grep ${version}"
+               }
 	}
       }
 
