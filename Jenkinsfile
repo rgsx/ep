@@ -12,7 +12,7 @@ pipeline {
        image = "task6"
        url = "http://95.217.182.68:15000/v2/${image}/tags/list"
        version = ""
-       deploy_ip = "95.217.238.44"
+       deploy_ip = "95.216.214.186"
        deploy_port = "80"
        deploy_project = "test"
        
