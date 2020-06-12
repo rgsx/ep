@@ -1,3 +1,6 @@
-.git
-.gradle
-build
+.terraform/*
+.terraform
+*.tfstate
+*.backup
+*.pem
+
